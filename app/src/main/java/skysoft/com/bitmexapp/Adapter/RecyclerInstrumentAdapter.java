@@ -49,7 +49,8 @@ public class RecyclerInstrumentAdapter extends RecyclerView.Adapter<RecyclerInst
         nf.setMinimumFractionDigits(2);
         String percent = nf.format(percentfloat);
 
-        holder.symbol.setText(item.get(position).getSymbol()+"/"+item.get(position).getQuoteCurrency());
+        holder.symbol.setText(item.get(position).getSymbol());
+        holder.quote.setText(" / "+item.get(position).getQuoteCurrency());
         holder.volume.setText(volume);
         holder.state.setText(item.get(position).getState());
 
@@ -75,12 +76,13 @@ public class RecyclerInstrumentAdapter extends RecyclerView.Adapter<RecyclerInst
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView symbol, volume, lastPrice, state, changePcnt;
+        public TextView symbol, quote, volume, lastPrice, state, changePcnt;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             symbol = (TextView) itemView.findViewById(R.id.symbol);
+            quote = (TextView) itemView.findViewById(R.id.quote);
             volume = (TextView) itemView.findViewById(R.id.volume);
             lastPrice = (TextView) itemView.findViewById(R.id.lastPrice);
             state = (TextView) itemView.findViewById(R.id.state);
