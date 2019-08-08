@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_markets"
+        android:icon="@drawable/bitcoin"
+        android:title="Markets" />
+
+    <item
+        android:id="@+id/navigation_order"
+        android:icon="@drawable/order_history"
+        android:title="Orders" />
+
+    <item
+        android:id="@+id/navigation_recenttrades"
+        android:icon="@drawable/tradesicon"
+        android:title="Trades" />
+
+    <item
+        android:id="@+id/navigation_chart"
+        android:icon="@drawable/chart"
+        android:title="Chart" />
+
+</menu>
