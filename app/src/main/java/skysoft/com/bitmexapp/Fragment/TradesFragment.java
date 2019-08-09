@@ -1,6 +1,7 @@
 package skysoft.com.bitmexapp.Fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,12 +64,20 @@ public class TradesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupSpinner();
-
+        final TextView textView = (TextView) requireActivity().findViewById(R.id.txtprice);
         try {
             handler = new Handler();
             final Runnable r = new Runnable() {
                 public void run() {
                     getOrderBookList();
+                    String side1 = String.valueOf(RecentTradesFragment.recentside);
+                    if(side1.equals("Buy")){
+                        textView.setTextColor(Color.parseColor("#00c087"));
+                        textView.setText(String.valueOf(RecentTradesFragment.recentprice));
+                    }else if(side1.equals("Sell")){
+                        textView.setTextColor(Color.parseColor("#e5036f"));
+                        textView.setText(String.valueOf(RecentTradesFragment.recentprice));
+                    }
                     handler.postDelayed(this, 2000);
                 }
             };

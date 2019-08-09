@@ -41,6 +41,8 @@ public class RecentTradesFragment extends Fragment {
     String[] symbols_rct_id = {"XBTUSD", "XBTU19", "XBTZ19"};
     Spinner spinner;
     SwipeRefreshLayout mSwipeRefreshLayoutRecentTrade;
+    public static float recentprice;
+    public static String recentside;
 
     public RecentTradesFragment() {
 
@@ -107,6 +109,9 @@ public class RecentTradesFragment extends Fragment {
                             if(recentTradesList == null || recentTradesList.isEmpty()){
                                 return;
                             }
+                            recentprice = recentTradesList.get(0).getPrice();
+                            recentside = recentTradesList.get(0).getSide();
+
                             RecyclerView recenttrades_recyclerView = (RecyclerView) requireActivity().findViewById(R.id.recyclerRecentTrades);
                             layoutManager = new LinearLayoutManager(requireContext());
                             recenttrades_recyclerView.setLayoutManager(layoutManager);

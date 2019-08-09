@@ -157,7 +157,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="0dp"
-            android:layout_height="222dp"
+            android:layout_height="216dp"
             android:id="@+id/sellorder_recycler"
             app:layout_constraintTop_toBottomOf="@id/tblheader1"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -167,13 +167,9 @@
         </android.support.v7.widget.RecyclerView>
 
         <TextView
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
             android:layout_width="0dp"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:id="@+id/txtprice"
-            android:text="9759.0"
-            android:textColor="@color/sellOrderColor"
             android:textSize="16sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -185,7 +181,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="0dp"
-            android:layout_height="222dp"
+            android:layout_height="216dp"
             android:id="@+id/buyorder_recycler"
             app:layout_constraintTop_toBottomOf="@id/txtprice"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -242,13 +238,13 @@
                 android:orientation="horizontal"/>
 
             <android.support.constraint.Guideline
-                app:layout_constraintGuide_percent="0.5"
+                app:layout_constraintGuide_percent="0.57"
                 android:id="@+id/left_ask"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"/>
             <android.support.constraint.Guideline
-                app:layout_constraintGuide_percent="0.57"
+                app:layout_constraintGuide_percent="0.64"
                 android:id="@+id/right_ask"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -264,7 +260,7 @@
                 app:layout_constraintBottom_toTopOf="@id/bottom_bid"/>
             <TextView
                 android:layout_marginLeft="5dp"
-                android:text="Bid"
+                android:text="Buy"
                 android:gravity="bottom"
                 android:textSize="18dp"
                 android:textColor="@color/grey"
@@ -284,7 +280,7 @@
                 app:layout_constraintBottom_toTopOf="@id/bottom_ask"/>
             <TextView
                 android:layout_marginLeft="5dp"
-                android:text="Ask"
+                android:text="Sell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
