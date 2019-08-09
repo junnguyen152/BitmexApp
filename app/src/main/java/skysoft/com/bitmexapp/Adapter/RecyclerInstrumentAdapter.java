@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +41,11 @@ public class RecyclerInstrumentAdapter extends RecyclerView.Adapter<RecyclerInst
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-
-        String lastPrice = String.valueOf(item.get(position).getLastPrice());
+        float price = item.get(position).getLastPrice();
+        DecimalFormat df = new DecimalFormat("#.########");
+        String lastPrice = df.format(price);
         String volume = "Vol "+String.valueOf(item.get(position).getVolume());
+
 
         float percentfloat = item.get(position).getLastChangePcnt()*100;
         nf = NumberFormat.getNumberInstance();
@@ -52,6 +55,7 @@ public class RecyclerInstrumentAdapter extends RecyclerView.Adapter<RecyclerInst
         holder.symbol.setText(item.get(position).getSymbol());
         holder.quote.setText(" / "+item.get(position).getQuoteCurrency());
         holder.volume.setText(volume);
+        holder.lastPrice.setText(lastPrice);
         holder.state.setText(item.get(position).getState());
 
         if(item.get(position).getLastChangePcnt()>=0){
@@ -66,7 +70,6 @@ public class RecyclerInstrumentAdapter extends RecyclerView.Adapter<RecyclerInst
             holder.changePcnt.setText(changePcntDown);
         }
         //symbolIdList.add(item.get(position).getSymbol());
-        holder.lastPrice.setText(lastPrice);
     }
 
     @Override
