@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -42,6 +44,8 @@ public class TradesFragment extends Fragment {
     private List<OrderBookData> orderbookList = null;
     private List<OrderBookData> sellorderbookList = null;
     private List<OrderBookData> buyorderbookList = null;
+    public static List<OrderBookData> buyList = null;
+    public static List<OrderBookData> sellList = null;
     Handler handler;
     Spinner spinner;
     //String[] symbols_id = {"XBTUSD", "XBT7D_U105", "XBT7D_D95", "ETHUSD", "XBTU19", "XBTZ19", "ETHU19", "LTCU19", "BHCU19", "ADAU19", "EOSU19", "TRXU19"};
@@ -86,7 +90,17 @@ public class TradesFragment extends Fragment {
             System.out.println("Error " + e.getMessage());
         }
 
-
+        Button btn_chart = (Button) requireActivity().findViewById(R.id.btn_chart);
+        btn_chart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChartFragment chartFragment = new ChartFragment();
+                FragmentTransaction fr = getFragmentManager().beginTransaction();
+                fr.add(R.id.relative_fragment, chartFragment);
+                fr.addToBackStack(null);
+                fr.commit();
+            }
+        });
     }
 
     private void getOrderBookList(){
@@ -115,6 +129,8 @@ public class TradesFragment extends Fragment {
 
                             sellorderbookList = new ArrayList<OrderBookData>();
                             buyorderbookList = new ArrayList<OrderBookData>();
+                            sellList = new ArrayList<OrderBookData>();
+                            buyList = new ArrayList<OrderBookData>();
 
                             for (int i = 0; i < orderbookList.size(); i++) {
                                 if (orderbookList.get(i).getSide().equals("Buy")) {
@@ -123,6 +139,8 @@ public class TradesFragment extends Fragment {
                                     sellorderbookList.add(orderbookList.get(i));
                                 }
                             }
+                            buyList.addAll(buyorderbookList);
+                            sellList.addAll(sellorderbookList);
                             callSellAdapter(sellorderbookList);
                             callBuyAdapter(buyorderbookList);
                         }catch (Exception e){

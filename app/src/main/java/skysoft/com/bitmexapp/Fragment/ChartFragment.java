@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -34,9 +33,7 @@ import skysoft.com.bitmexapp.R;
  */
 public class ChartFragment extends Fragment {
 
-    public LineChart buyChart;
-    public LineChart sellChart;
-
+    public LineChart chart;
     public ChartFragment() {
         // Required empty public constructor
     }
@@ -52,34 +49,35 @@ public class ChartFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        buyChart = requireActivity().findViewById(R.id.buy_chart);
-        sellChart = requireActivity().findViewById(R.id.sell_chart);
+        chart = requireActivity().findViewById(R.id.chart);
 
-        buyChart.setTouchEnabled(true);
-        buyChart.setPinchZoom(true);
+        chart.setTouchEnabled(true);
+        chart.setPinchZoom(true);
+
         MyMarkerView mv = new MyMarkerView(requireContext(), R.layout.custom_market_view);
 
-        mv.setChartView(buyChart);
-        buyChart.setMarker(mv);
+        mv.setChartView(chart);
+        chart.setMarker(mv);
         renderData();
     }
 
     public void renderData() {
-        LimitLine llXAxis = new LimitLine(10f, "Index 10");
+        /*LimitLine llXAxis = new LimitLine(10f, "Index 10");
         llXAxis.setLineWidth(4f);
         llXAxis.enableDashedLine(10f, 10f, 0f);
         llXAxis.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
         llXAxis.setTextSize(10f);
-        llXAxis.setTextColor(Color.WHITE);
+        llXAxis.setTextColor(Color.WHITE);*/
 
-        XAxis xAxis = buyChart.getXAxis();
+        //buy chart
+        XAxis xAxis = chart.getXAxis();
         xAxis.enableGridDashedLine(10f, 10f, 0f);
-        xAxis.setAxisMaximum(10f);
-        xAxis.setAxisMinimum(0f);
+        xAxis.setAxisMaximum(12000);
+        xAxis.setAxisMinimum(9000);
         xAxis.setTextColor(Color.WHITE);;
         xAxis.setDrawLimitLinesBehindData(true);
 
-        LimitLine ll1 = new LimitLine(215f, "Maximum Limit");
+        /*LimitLine ll1 = new LimitLine(215f, "Maximum Limit");
         ll1.setLineWidth(4f);
         ll1.enableDashedLine(10f, 10f, 0f);
         ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
@@ -91,12 +89,12 @@ public class ChartFragment extends Fragment {
         ll2.enableDashedLine(10f, 10f, 0f);
         ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
         ll2.setTextSize(10f);
-        ll2.setTextColor(Color.WHITE);
+        ll2.setTextColor(Color.WHITE);*/
 
-        YAxis leftAxis = buyChart.getAxisLeft();
+        YAxis leftAxis = chart.getAxisLeft();
         leftAxis.removeAllLimitLines();
-        leftAxis.addLimitLine(ll1);
-        leftAxis.addLimitLine(ll2);
+        //leftAxis.addLimitLine(ll1);
+        //leftAxis.addLimitLine(ll2);
         leftAxis.setAxisMaximum(350f);
         leftAxis.setAxisMinimum(0f);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
@@ -104,55 +102,85 @@ public class ChartFragment extends Fragment {
         leftAxis.setDrawLimitLinesBehindData(false);
         leftAxis.setTextColor(Color.WHITE);
 
-        buyChart.getAxisRight().setEnabled(false);
+        chart.getAxisRight().setEnabled(false);
         setData();
     }
 
     public void setData() {
         ArrayList<Entry> values = new ArrayList<>();
-        values.add(new Entry(1, 50));
-        values.add(new Entry(2, 100));
-        values.add(new Entry(3, 80));
-        values.add(new Entry(4, 120));
-        values.add(new Entry(5, 110));
-        values.add(new Entry(7, 150));
-        values.add(new Entry(8, 250));
-        values.add(new Entry(9, 190));
+        values.add(new Entry(9000, 50));
+        values.add(new Entry(9100, 100));
+        values.add(new Entry(9200, 80));
+        values.add(new Entry(9500, 120));
+        values.add(new Entry(10000, 110));
+        values.add(new Entry(10300, 150));
+        values.add(new Entry(10500, 250));
+
+        ArrayList<Entry> values1 = new ArrayList<>();
+        values1.add(new Entry(TradesFragment.buyList.get(2).getPrice(), 50));
+        values1.add(new Entry(TradesFragment.buyList.get(1).getPrice(), 100));
+        values1.add(new Entry(TradesFragment.buyList.get(0).getPrice(), 80));
 
         LineDataSet set1;
-        if (buyChart.getData() != null &&
-                buyChart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet) buyChart.getData().getDataSetByIndex(0);
+        LineDataSet set2;
+        if (chart.getData() != null &&
+                chart.getData().getDataSetCount() > 0) {
+            set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
             set1.setValues(values);
-            buyChart.getData().notifyDataChanged();
-            buyChart.notifyDataSetChanged();
+            set2 = (LineDataSet) chart.getData().getDataSetByIndex(0);
+            set2.setValues(values);
+            chart.getData().notifyDataChanged();
+            chart.notifyDataSetChanged();
         } else {
-            set1 = new LineDataSet(values, "Sample Data");
+            //dataset 1
+            set1 = new LineDataSet(values, "Buy");
             set1.setDrawIcons(false);
             set1.enableDashedLine(10f, 5f, 0f);
             set1.enableDashedHighlightLine(10f, 5f, 0f);
-            set1.setColor(Color.parseColor("#f5bc00"));
+            set1.setColor(Color.parseColor("#00c087"));
             set1.setCircleColor(Color.parseColor("#f5bc00"));
             set1.setLineWidth(1f);
             set1.setCircleRadius(3f);
             set1.setDrawCircleHole(false);
             set1.setValueTextSize(9f);
-            set1.setValueTextColor(Color.parseColor("#f5bc00"));
+            set1.setValueTextColor(Color.parseColor("#00c087"));
             set1.setDrawFilled(true);
             set1.setFormLineWidth(1f);
             set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
             set1.setFormSize(15.f);
 
+            //Dataset 2
+            set2 = new LineDataSet(values1, "Sell");
+            set2.setDrawIcons(false);
+            set2.enableDashedLine(10f, 5f, 0f);
+            set2.enableDashedHighlightLine(10f, 5f, 0f);
+            set2.setColor(Color.parseColor("#e5036f"));
+            set2.setCircleColor(Color.parseColor("#f5bc00"));
+            set2.setLineWidth(1f);
+            set2.setCircleRadius(3f);
+            set2.setDrawCircleHole(false);
+            set2.setValueTextSize(9f);
+            set2.setValueTextColor(Color.parseColor("#e5036f"));
+            set2.setDrawFilled(true);
+            set2.setFormLineWidth(1f);
+            set2.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+            set2.setFormSize(15.f);
+
             if (Utils.getSDKInt() >= 18) {
                 Drawable drawable = ContextCompat.getDrawable(requireContext(), R.drawable.fade_buy);
                 set1.setFillDrawable(drawable);
+                Drawable drawable1 = ContextCompat.getDrawable(requireContext(), R.drawable.fade_sell);
+                set2.setFillDrawable(drawable1);
             } else {
                 set1.setFillColor(Color.parseColor("#f5bc00"));
+                set2.setFillColor(Color.parseColor("#f5bc00"));
             }
             ArrayList<ILineDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1);
+            dataSets.add(set2);
             LineData data = new LineData(dataSets);
-            buyChart.setData(data);
+            chart.setData(data);
+            chart.getLegend().setTextColor(Color.WHITE);
         }
     }
 }

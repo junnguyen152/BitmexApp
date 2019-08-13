@@ -34,20 +34,20 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.navigation_markets:
-                    fm.beginTransaction().hide(active).show(marketsFragment).commit();
+                    fm.beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).hide(active).show(marketsFragment).commit();
                     active = marketsFragment;
                     return true;
                 case R.id.navigation_order:
-                    fm.beginTransaction().hide(active).show(tradesFragment).commit();
+                    fm.beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).hide(active).show(tradesFragment).commit();
                     active = tradesFragment;
                     return true;
                 case R.id.navigation_recenttrades:
-                    fm.beginTransaction().hide(active).show(recentTradesFragment).commit();
+                    fm.beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).hide(active).show(recentTradesFragment).commit();
                     active = recentTradesFragment;
                     return true;
                 case R.id.navigation_chart:
-                    fm.beginTransaction().hide(active).show(chartFragment).commit();
-                    active = chartFragment;
+                    /*fm.beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).hide(active).show(chartFragment).commit();
+                    active = chartFragment;*/
                     return true;
             }
             return false;
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         fm.beginTransaction().add(R.id.relative_fragment, marketsFragment).commit();
         fm.beginTransaction().add(R.id.relative_fragment, tradesFragment).hide(tradesFragment).commit();
         fm.beginTransaction().add(R.id.relative_fragment, recentTradesFragment).hide(recentTradesFragment).commit();
-        fm.beginTransaction().add(R.id.relative_fragment, chartFragment).hide(chartFragment).commit();
+        //fm.beginTransaction().add(R.id.relative_fragment, chartFragment).hide(chartFragment).commit();
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
