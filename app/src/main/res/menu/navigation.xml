@@ -16,9 +16,5 @@
         android:icon="@drawable/tradesicon"
         android:title="Trades" />
 
-    <item
-        android:id="@+id/navigation_chart"
-        android:icon="@drawable/chart"
-        android:title="Chart" />
 
 </menu>

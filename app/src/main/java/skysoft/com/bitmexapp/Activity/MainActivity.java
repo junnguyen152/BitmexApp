@@ -45,10 +45,6 @@ public class MainActivity extends AppCompatActivity {
                     fm.beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).hide(active).show(recentTradesFragment).commit();
                     active = recentTradesFragment;
                     return true;
-                case R.id.navigation_chart:
-                    /*fm.beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).hide(active).show(chartFragment).commit();
-                    active = chartFragment;*/
-                    return true;
             }
             return false;
         }

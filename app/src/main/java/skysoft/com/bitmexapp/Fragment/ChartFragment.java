@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,6 +35,9 @@ import skysoft.com.bitmexapp.R;
 public class ChartFragment extends Fragment {
 
     public LineChart chart;
+    public long y1,y2,y3,y4,y5,y6,y7,y8,y9,y10,y11,y12,y13,y14;
+    public long totalsell, totalbuy;
+    Handler handler;
     public ChartFragment() {
         // Required empty public constructor
     }
@@ -49,16 +53,27 @@ public class ChartFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        chart = requireActivity().findViewById(R.id.chart);
 
-        chart.setTouchEnabled(true);
-        chart.setPinchZoom(true);
 
-        MyMarkerView mv = new MyMarkerView(requireContext(), R.layout.custom_market_view);
+        try {
+            handler = new Handler();
+            final Runnable r = new Runnable() {
+                public void run() {
+                    chart = requireActivity().findViewById(R.id.chart);
 
-        mv.setChartView(chart);
-        chart.setMarker(mv);
-        renderData();
+                    chart.setTouchEnabled(true);
+                    chart.setPinchZoom(true);
+                    MyMarkerView mv = new MyMarkerView(requireContext(), R.layout.custom_market_view);
+                    mv.setChartView(chart);
+                    chart.setMarker(mv);
+                    renderData();
+                    handler.postDelayed(this, 2000);
+                }
+            };
+            handler.postDelayed(r, 2000);
+        }catch (Exception e){
+            System.out.println("Error " + e.getMessage());
+        }
     }
 
     public void renderData() {
@@ -72,8 +87,8 @@ public class ChartFragment extends Fragment {
         //buy chart
         XAxis xAxis = chart.getXAxis();
         xAxis.enableGridDashedLine(10f, 10f, 0f);
-        xAxis.setAxisMaximum(12000);
-        xAxis.setAxisMinimum(9000);
+        xAxis.setAxisMaximum(TradesFragment.sellList.get(0).getPrice());
+        xAxis.setAxisMinimum(TradesFragment.buyList.get(6).getPrice());
         xAxis.setTextColor(Color.WHITE);;
         xAxis.setDrawLimitLinesBehindData(true);
 
@@ -90,12 +105,19 @@ public class ChartFragment extends Fragment {
         ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
         ll2.setTextSize(10f);
         ll2.setTextColor(Color.WHITE);*/
+        totalbuy = 0; totalsell = 0;
+        for(int i = 0; i < TradesFragment.buyList.size(); i++){
+            totalbuy += TradesFragment.buyList.get(i).getSize();
+        }
+        for(int i = 0; i < TradesFragment.sellList.size(); i++){
+            totalsell += TradesFragment.sellList.get(i).getSize();
+        }
 
         YAxis leftAxis = chart.getAxisLeft();
         leftAxis.removeAllLimitLines();
         //leftAxis.addLimitLine(ll1);
         //leftAxis.addLimitLine(ll2);
-        leftAxis.setAxisMaximum(350f);
+        leftAxis.setAxisMaximum(totalbuy + totalsell);
         leftAxis.setAxisMinimum(0f);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
         leftAxis.setDrawZeroLine(false);
@@ -107,19 +129,41 @@ public class ChartFragment extends Fragment {
     }
 
     public void setData() {
+
+        y1 = TradesFragment.buyList.get(0).getSize();
+        y2 = y1 + TradesFragment.buyList.get(1).getSize();
+        y3 = y2 + TradesFragment.buyList.get(2).getSize();
+        y4 = y3 + TradesFragment.buyList.get(3).getSize();
+        y5 = y4 + TradesFragment.buyList.get(4).getSize();
+        y6 = y5 + TradesFragment.buyList.get(5).getSize();
+        y7 = y6 + TradesFragment.buyList.get(6).getSize();
+
+        y14 = TradesFragment.sellList.get(6).getSize();
+        y13 = y14 + TradesFragment.sellList.get(5).getSize();
+        y12 = y13 + TradesFragment.sellList.get(4).getSize();
+        y11 = y12 + TradesFragment.sellList.get(3).getSize();
+        y10 = y11 + TradesFragment.sellList.get(2).getSize();
+        y9 = y10 + TradesFragment.sellList.get(1).getSize();
+        y8 = y9 + TradesFragment.sellList.get(0).getSize();
+
+
         ArrayList<Entry> values = new ArrayList<>();
-        values.add(new Entry(9000, 50));
-        values.add(new Entry(9100, 100));
-        values.add(new Entry(9200, 80));
-        values.add(new Entry(9500, 120));
-        values.add(new Entry(10000, 110));
-        values.add(new Entry(10300, 150));
-        values.add(new Entry(10500, 250));
+        values.add(new Entry(TradesFragment.buyList.get(6).getPrice(), y7));
+        values.add(new Entry(TradesFragment.buyList.get(5).getPrice(), y6));
+        values.add(new Entry(TradesFragment.buyList.get(4).getPrice(), y5));
+        values.add(new Entry(TradesFragment.buyList.get(3).getPrice(), y4));
+        values.add(new Entry(TradesFragment.buyList.get(2).getPrice(), y3));
+        values.add(new Entry(TradesFragment.buyList.get(1).getPrice(), y2));
+        values.add(new Entry(TradesFragment.buyList.get(0).getPrice(), y1));
 
         ArrayList<Entry> values1 = new ArrayList<>();
-        values1.add(new Entry(TradesFragment.buyList.get(2).getPrice(), 50));
-        values1.add(new Entry(TradesFragment.buyList.get(1).getPrice(), 100));
-        values1.add(new Entry(TradesFragment.buyList.get(0).getPrice(), 80));
+        values1.add(new Entry(TradesFragment.sellList.get(6).getPrice(), y14));
+        values1.add(new Entry(TradesFragment.sellList.get(5).getPrice(), y13));
+        values1.add(new Entry(TradesFragment.sellList.get(4).getPrice(), y12));
+        values1.add(new Entry(TradesFragment.sellList.get(3).getPrice(), y11));
+        values1.add(new Entry(TradesFragment.sellList.get(2).getPrice(), y10));
+        values1.add(new Entry(TradesFragment.sellList.get(1).getPrice(), y9));
+        values1.add(new Entry(TradesFragment.sellList.get(0).getPrice(), y8));
 
         LineDataSet set1;
         LineDataSet set2;
@@ -180,6 +224,10 @@ public class ChartFragment extends Fragment {
             dataSets.add(set2);
             LineData data = new LineData(dataSets);
             chart.setData(data);
+            chart.getData().notifyDataChanged();
+            chart.notifyDataSetChanged();
+            chart.invalidate();
+            chart.setVisibleXRange(7,8);
             chart.getLegend().setTextColor(Color.WHITE);
         }
     }
